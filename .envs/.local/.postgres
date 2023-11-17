@@ -2,6 +2,6 @@
 # ------------------------------------------------------------------------------
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
-POSTGRES_DB=c_ride_pro
+POSTGRES_DB=c_ride
 POSTGRES_USER=gVTPygGHtlrXFChkIHFLcDGrMcEpFExW
 POSTGRES_PASSWORD=418uVe244vYOotFJnaBUWnUN1CMq2uubjp9iBVKhPXtewqgJBfsRJH6l48ThFf16

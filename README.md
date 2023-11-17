@@ -1,4 +1,4 @@
-# c_ride_pro
+# c_ride
 
 Rides for everyone!
 
@@ -16,7 +16,23 @@ Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings
 ### Local Development: Set the environment variable `COMPOSE_FILE` pointing to `local.yml`
 
 ```bash
-export COMPOSE_FILE=local.yml
+set COMPOSE_FILE=local.yml
+```
+
+```bash
+docker compose up --build
+```
+
+```bash
+docker compose down
+```
+
+```bash
+docker compose down -v
+```
+
+```bash
+docker compose ps
 ```
 
 #### Execute Management Commands
@@ -46,7 +62,7 @@ For convenience, you can keep your normal user logged in on Chrome and your supe
 Running type checks with mypy:
 
 ```bash
-mypy c_ride_pro
+mypy c_ride
 ```
 
 ### Test coverage
@@ -82,7 +98,7 @@ This app comes with Celery.
 To run a celery worker:
 
 ```bash
-cd c_ride_pro
+cd c_ride
 celery -A config.celery_app worker -l info
 ```
 
@@ -91,14 +107,14 @@ Please note: For Celery's import magic to work, it is important _where_ the cele
 To run [periodic tasks](https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html), you'll need to start the celery beat scheduler service. You can start it as a standalone process:
 
 ```bash
-cd c_ride_pro
+cd c_ride
 celery -A config.celery_app beat
 ```
 
 or you can embed the beat service inside a worker with the `-B` option (not recommended for production use):
 
 ```bash
-cd c_ride_pro
+cd c_ride
 celery -A config.celery_app worker -B -l info
 ```
 
@@ -118,3 +134,29 @@ The following details how to deploy this application.
 ### Docker
 
 See detailed [cookiecutter-django Docker documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html).
+
+### Debugging
+
+Stop only the django container with the following command:
+
+```bash
+docker compose ps
+```
+
+Select the django container id and run the following command:
+
+```bash
+docker rm -f c_ride_local_django
+```
+
+Run the django container with the following command:
+
+```bash
+docker compose run --rm --service-ports django
+```
+
+Add in the code the following line:
+
+```python
+import ipdb; ipdb.set_trace()
+```

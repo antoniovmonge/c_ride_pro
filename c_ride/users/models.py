@@ -3,12 +3,12 @@ from django.db.models import CharField, EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from c_ride_pro.users.managers import UserManager
+from c_ride.users.managers import UserManager
 
 
 class User(AbstractUser):
     """
-    Default custom user model for c_ride_pro.
+    Default custom user model for c_ride.
     If adding fields that need to be filled at user signup,
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """

@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from c_ride_pro.users.api.views import UserViewSet
+from c_ride.users.api.views import UserViewSet
 
 if settings.DEBUG:
     router = DefaultRouter()

@@ -1,4 +1,4 @@
-# Translations for the c_ride_pro project
+# Translations for the c_ride project
 # Copyright (C) 2023 Antonio VM
 # Antonio VM <antonio-vm@ride.com>, 2023.
 #

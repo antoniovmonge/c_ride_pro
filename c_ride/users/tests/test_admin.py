@@ -1,6 +1,6 @@
 from django.urls import reverse
 
-from c_ride_pro.users.models import User
+from c_ride.users.models import User
 
 
 class TestUserAdmin:

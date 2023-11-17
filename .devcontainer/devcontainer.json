@@ -1,5 +1,5 @@
 {
-    "name": "c_ride_pro_dev",
+    "name": "c_ride_dev",
     "dockerComposeFile": [
         "../local.yml"
     ],

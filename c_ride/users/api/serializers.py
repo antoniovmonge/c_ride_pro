@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from c_ride_pro.users.models import User as UserType
+from c_ride.users.models import User as UserType
 
 User = get_user_model()
 

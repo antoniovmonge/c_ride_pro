@@ -41,7 +41,7 @@ def update_site_forward(apps, schema_editor):
         Site,
         schema_editor.connection,
         "ride.com",
-        "c_ride_pro",
+        "c_ride",
     )
 
 

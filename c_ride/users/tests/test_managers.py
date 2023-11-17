@@ -3,7 +3,7 @@ from io import StringIO
 import pytest
 from django.core.management import call_command
 
-from c_ride_pro.users.models import User
+from c_ride.users.models import User
 
 
 @pytest.mark.django_db

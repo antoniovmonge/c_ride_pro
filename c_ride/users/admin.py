@@ -4,7 +4,7 @@ from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import decorators, get_user_model
 from django.utils.translation import gettext_lazy as _
 
-from c_ride_pro.users.forms import UserAdminChangeForm, UserAdminCreationForm
+from c_ride.users.forms import UserAdminChangeForm, UserAdminCreationForm
 
 User = get_user_model()
 

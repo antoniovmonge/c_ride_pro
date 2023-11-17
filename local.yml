@@ -1,16 +1,16 @@
 version: '3'
 
 volumes:
-  c_ride_pro_local_postgres_data: {}
-  c_ride_pro_local_postgres_data_backups: {}
+  c_ride_local_postgres_data: {}
+  c_ride_local_postgres_data_backups: {}
 
 services:
   django: &django
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
-    image: c_ride_pro_local_django
-    container_name: c_ride_pro_local_django
+    image: c_ride_local_django
+    container_name: c_ride_local_django
     depends_on:
       - postgres
       - redis
@@ -28,17 +28,17 @@ services:
     build:
       context: .
       dockerfile: ./compose/production/postgres/Dockerfile
-    image: c_ride_pro_production_postgres
-    container_name: c_ride_pro_local_postgres
+    image: c_ride_production_postgres
+    container_name: c_ride_local_postgres
     volumes:
-      - c_ride_pro_local_postgres_data:/var/lib/postgresql/data
-      - c_ride_pro_local_postgres_data_backups:/backups
+      - c_ride_local_postgres_data:/var/lib/postgresql/data
+      - c_ride_local_postgres_data_backups:/backups
     env_file:
       - ./.envs/.local/.postgres
 
   docs:
-    image: c_ride_pro_local_docs
-    container_name: c_ride_pro_local_docs
+    image: c_ride_local_docs
+    container_name: c_ride_local_docs
     build:
       context: .
       dockerfile: ./compose/local/docs/Dockerfile
@@ -47,25 +47,25 @@ services:
     volumes:
       - ./docs:/docs:z
       - ./config:/app/config:z
-      - ./c_ride_pro:/app/c_ride_pro:z
+      - ./c_ride:/app/c_ride:z
     ports:
       - '9000:9000'
     command: /start-docs
 
   mailpit:
     image: axllent/mailpit:v1.8
-    container_name: c_ride_pro_local_mailpit
+    container_name: c_ride_local_mailpit
     ports:
       - "8025:8025"
 
   redis:
     image: redis:6
-    container_name: c_ride_pro_local_redis
+    container_name: c_ride_local_redis
 
   celeryworker:
     <<: *django
-    image: c_ride_pro_local_celeryworker
-    container_name: c_ride_pro_local_celeryworker
+    image: c_ride_local_celeryworker
+    container_name: c_ride_local_celeryworker
     depends_on:
       - redis
       - postgres
@@ -75,8 +75,8 @@ services:
 
   celerybeat:
     <<: *django
-    image: c_ride_pro_local_celerybeat
-    container_name: c_ride_pro_local_celerybeat
+    image: c_ride_local_celerybeat
+    container_name: c_ride_local_celerybeat
     depends_on:
       - redis
       - postgres
@@ -86,8 +86,8 @@ services:
 
   flower:
     <<: *django
-    image: c_ride_pro_local_flower
-    container_name: c_ride_pro_local_flower
+    image: c_ride_local_flower
+    container_name: c_ride_local_flower
     ports:
       - '5555:5555'
     command: /start-flower

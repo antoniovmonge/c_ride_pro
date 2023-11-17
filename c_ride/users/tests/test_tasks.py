@@ -1,8 +1,8 @@
 import pytest
 from celery.result import EagerResult
 
-from c_ride_pro.users.tasks import get_users_count
-from c_ride_pro.users.tests.factories import UserFactory
+from c_ride.users.tasks import get_users_count
+from c_ride.users.tests.factories import UserFactory
 
 pytestmark = pytest.mark.django_db
 

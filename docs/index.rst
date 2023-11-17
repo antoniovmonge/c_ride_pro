@@ -1,9 +1,9 @@
-.. c_ride_pro documentation master file, created by
+.. c_ride documentation master file, created by
    sphinx-quickstart.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to c_ride_pro's documentation!
+Welcome to c_ride's documentation!
 ======================================================================
 
 .. toctree::

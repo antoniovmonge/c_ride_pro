@@ -3,7 +3,7 @@ import django.contrib.auth.validators
 from django.db import migrations, models
 import django.utils.timezone
 
-import c_ride_pro.users.models
+import c_ride.users.models
 
 
 class Migration(migrations.Migration):
@@ -105,7 +105,7 @@ class Migration(migrations.Migration):
                 "abstract": False,
             },
             managers=[
-                ("objects", c_ride_pro.users.models.UserManager()),
+                ("objects", c_ride.users.models.UserManager()),
             ],
         ),
     ]

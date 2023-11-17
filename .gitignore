@@ -152,6 +152,7 @@ typings/
 
 
 ### VisualStudioCode template
+.vscode/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -272,7 +273,7 @@ tags
 dump.rdb
 
 ### Project template
-c_ride_pro/media/
+c_ride/media/
 
 .pytest_cache/
 .ipython/

@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 
-from c_ride_pro.users.models import User
+from c_ride.users.models import User
 
 
 def test_user_detail(user: User):

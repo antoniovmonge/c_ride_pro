@@ -6,8 +6,8 @@ from pathlib import Path
 import environ
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-# c_ride_pro/
-APPS_DIR = BASE_DIR / "c_ride_pro"
+# c_ride/
+APPS_DIR = BASE_DIR / "c_ride"
 env = environ.Env()
 
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
@@ -84,7 +84,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "c_ride_pro.users",
+    "c_ride.users",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -93,7 +93,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
-MIGRATION_MODULES = {"sites": "c_ride_pro.contrib.sites.migrations"}
+MIGRATION_MODULES = {"sites": "c_ride.contrib.sites.migrations"}
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
@@ -187,7 +187,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                "c_ride_pro.users.context_processors.allauth_settings",
+                "c_ride.users.context_processors.allauth_settings",
             ],
         },
     }
@@ -307,13 +307,13 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-ACCOUNT_ADAPTER = "c_ride_pro.users.adapters.AccountAdapter"
+ACCOUNT_ADAPTER = "c_ride.users.adapters.AccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
-ACCOUNT_FORMS = {"signup": "c_ride_pro.users.forms.UserSignupForm"}
+ACCOUNT_FORMS = {"signup": "c_ride.users.forms.UserSignupForm"}
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
-SOCIALACCOUNT_ADAPTER = "c_ride_pro.users.adapters.SocialAccountAdapter"
+SOCIALACCOUNT_ADAPTER = "c_ride.users.adapters.SocialAccountAdapter"
 # https://django-allauth.readthedocs.io/en/latest/forms.html
-SOCIALACCOUNT_FORMS = {"signup": "c_ride_pro.users.forms.UserSocialSignupForm"}
+SOCIALACCOUNT_FORMS = {"signup": "c_ride.users.forms.UserSocialSignupForm"}
 
 # django-rest-framework
 # -------------------------------------------------------------------------------
@@ -333,8 +333,8 @@ CORS_URLS_REGEX = r"^/api/.*$"
 # By Default swagger ui is available only to admin user(s). You can change permission classes to change that
 # See more configuration options at https://drf-spectacular.readthedocs.io/en/latest/settings.html#settings
 SPECTACULAR_SETTINGS = {
-    "TITLE": "c_ride_pro API",
-    "DESCRIPTION": "Documentation of API endpoints of c_ride_pro",
+    "TITLE": "c_ride API",
+    "DESCRIPTION": "Documentation of API endpoints of c_ride",
     "VERSION": "1.0.0",
     "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
 }

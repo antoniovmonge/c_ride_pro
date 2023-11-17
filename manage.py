@@ -24,8 +24,8 @@ if __name__ == "__main__":
         raise
 
     # This allows easy placement of apps within the interior
-    # c_ride_pro directory.
+    # c_ride directory.
     current_path = Path(__file__).parent.resolve()
-    sys.path.append(str(current_path / "c_ride_pro"))
+    sys.path.append(str(current_path / "c_ride"))
 
     execute_from_command_line(sys.argv)

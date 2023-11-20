@@ -166,3 +166,7 @@ import ipdb; ipdb.set_trace()
 ```bash
 docker-compose -f local.yml run --rm django black .
 ```
+
+```bash
+pre-commit run --all-files
+```

@@ -12,7 +12,11 @@ from django.utils.translation import gettext_lazy as _
 from c_ride.users.forms import UserAdminChangeForm
 from c_ride.users.models import User
 from c_ride.users.tests.factories import UserFactory
-from c_ride.users.views import UserRedirectView, UserUpdateView, user_detail_view
+from c_ride.users.views import (
+    UserRedirectView,
+    UserUpdateView,
+    user_detail_view,
+)
 
 pytestmark = pytest.mark.django_db
 

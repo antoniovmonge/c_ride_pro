@@ -38,11 +38,11 @@ docker compose ps
 #### Execute Management Commands
 
 ```bash
-docker compose run --rm django python manage.py makemigrations
+docker compose -f local.yml run --rm django python manage.py makemigrations
 ```
 
 ```bash
-docker compose run --rm django python manage.py migrate
+docker compose -f local.yml run --rm django  python manage.py migrate
 ```
 
 ### Setting Up Your Users
@@ -169,4 +169,10 @@ docker-compose -f local.yml run --rm django black .
 
 ```bash
 pre-commit run --all-files
+```
+
+### Create Local User and Admin
+
+```bash
+docker-compose -f local.yml run --rm django python manage.py create_local_user_and_admin
 ```

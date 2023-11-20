@@ -85,7 +85,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "c_ride.users",
-    # Your stuff: custom apps go here
     "c_ride.circles",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

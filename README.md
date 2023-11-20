@@ -70,21 +70,21 @@ mypy c_ride
 To run the tests, check your test coverage, and generate an HTML coverage report:
 
 ```bash
-coverage run -m pytest
+docker-compose -f local.yml run --rm django coverage run -m pytest
 ```
 
 ```bash
-coverage html
+docker-compose -f local.yml run --rm django coverage html
 ```
 
 ```bash
-open htmlcov/index.html
+docker-compose -f local.yml run --rm django open htmlcov/index.html
 ```
 
 #### Running tests with pytest
 
 ```bash
-pytest
+docker-compose -f local.yml run --rm django run -m pytest
 ```
 
 ### Live reloading and Sass CSS compilation

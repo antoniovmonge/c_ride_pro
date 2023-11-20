@@ -5,6 +5,7 @@ from django.contrib.auth import decorators, get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from c_ride.users.forms import UserAdminChangeForm, UserAdminCreationForm
+from c_ride.users.models import Profile
 
 User = get_user_model()
 
@@ -20,7 +21,17 @@ class UserAdmin(auth_admin.UserAdmin):
     add_form = UserAdminCreationForm
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        (_("Personal info"), {"fields": ("name",)}),
+        (
+            _("Personal info"),
+            {
+                "fields": (
+                    "name",
+                    "phone_number",
+                    "phone_number_verified",
+                    "is_client",
+                )
+            },
+        ),
         (
             _("Permissions"),
             {
@@ -36,7 +47,7 @@ class UserAdmin(auth_admin.UserAdmin):
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
     list_display = ["email", "name", "is_superuser"]
-    search_fields = ["name"]
+    search_fields = ["name", "email"]
     ordering = ["id"]
     add_fieldsets = (
         (
@@ -47,3 +58,29 @@ class UserAdmin(auth_admin.UserAdmin):
             },
         ),
     )
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (
+            "Profile",
+            {
+                "fields": (
+                    "user",
+                    "picture",
+                    "biography",
+                    "reputation",
+                    "rides_taken",
+                    "rides_offered",
+                )
+            },
+        ),
+        (
+            "Metadata",
+            {
+                "fields": ("created", "modified"),
+            },
+        ),
+    )
+    readonly_fields = ("created", "modified")

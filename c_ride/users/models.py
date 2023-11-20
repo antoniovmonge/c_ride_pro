@@ -43,7 +43,7 @@ class User(CRideModel, AbstractUser):
         "client status",
         default=True,
         help_text=(
-            "Help easily distinguish users and perform queries."
+            "Help easily distinguish users and perform queries. "
             "Clients are the main type of user."
         ),
     )
@@ -75,7 +75,7 @@ class Profile(CRideModel):
     and statistics.
     """
 
-    users = models.OneToOneField("users.User", on_delete=models.CASCADE)
+    user = models.OneToOneField("User", on_delete=models.CASCADE)
     picture = models.ImageField(
         "profile picture",
         upload_to="users/pictures/",

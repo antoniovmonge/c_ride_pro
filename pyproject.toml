@@ -63,7 +63,7 @@ load-plugins = [
 django-settings-module = "config.settings.local"
 
 [tool.pylint.FORMAT]
-max-line-length = 80
+max-line-length = 120
 
 [tool.pylint."MESSAGES CONTROL"]
 disable = [
@@ -95,7 +95,7 @@ format_js = true
 ignore = "H006,H030,H031,T002"
 include = "H017,H035"
 indent = 2
-max_line_length = 80
+max_line_length = 120
 profile = "django"
 
 [tool.djlint.css]

@@ -160,3 +160,9 @@ Add in the code the following line:
 ```python
 import ipdb; ipdb.set_trace()
 ```
+
+### Code Quality
+
+```bash
+docker-compose -f local.yml run --rm django black .
+```

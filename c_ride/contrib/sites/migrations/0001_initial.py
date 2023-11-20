@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = []
 
     operations = [
@@ -28,7 +27,12 @@ class Migration(migrations.Migration):
                         validators=[_simple_domain_name_validator],
                     ),
                 ),
-                ("name", models.CharField(max_length=50, verbose_name="display name")),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=50, verbose_name="display name"
+                    ),
+                ),
             ],
             options={
                 "ordering": ("domain",),

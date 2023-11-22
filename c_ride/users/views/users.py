@@ -11,7 +11,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 # Serializers
-from c_ride.users.serializers import UserLoginSerializer, UserModelSerializer
+from c_ride.users.serializers import (
+    UserLoginSerializer,
+    UserModelSerializer,
+    UserSignUpSerializer,
+)
 
 User = get_user_model()
 
@@ -65,4 +69,16 @@ class UserLoginAPIView(APIView):
             "user": UserModelSerializer(user).data,
             "access_token": token,
         }
+        return Response(data, status=status.HTTP_201_CREATED)
+
+
+class UserSignUpAPIView(APIView):
+    """User sign up API view."""
+
+    def post(self, request, *args, **kwargs):
+        """Handle HTTP POST request."""
+        serializer = UserSignUpSerializer(data=request.data)  # <= LOOK HERE
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        data = UserModelSerializer(user).data
         return Response(data, status=status.HTTP_201_CREATED)

@@ -26,4 +26,7 @@ shell:
 superuser:
 	$(MANAGE) createsuperuser
 
+precommit:
+	pre-commit run --all-files
+
 .PHONY: run migrate test shell superuser

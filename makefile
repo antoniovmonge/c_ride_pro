@@ -7,6 +7,9 @@ MANAGE = docker compose -f local.yml run --rm django python manage.py
 up:
 	docker compose -f local.yml up
 
+up-build:
+	docker compose -f local.yml up --build
+
 down:
 	docker compose -f local.yml down
 
@@ -32,10 +35,10 @@ precommit:
 show:
 	docker compose -f local.yml ps
 
-stop django:
+stop-django:
 	docker rm -f c_ride_local_django
 
-start django:
+start-django:
 	docker-compose -f local.yml run --rm --service-ports django
 
 .PHONY: run migrate test shell superuser

@@ -1,10 +1,17 @@
 """Users serializers."""
 
+# Utilities
+from datetime import timedelta
+
+import jwt
+from django.conf import settings
+
 # Django
 from django.contrib.auth import authenticate, password_validation
 from django.core.mail import EmailMultiAlternatives
 from django.core.validators import RegexValidator
 from django.template.loader import render_to_string
+from django.utils import timezone
 
 # Django REST Framework
 from rest_framework import serializers
@@ -113,4 +120,39 @@ class UserSignUpSerializer(serializers.Serializer):
 
     def gen_verification_token(self, user):
         """Create JWT token that the user can use to verify its account."""
-        return "abc"
+        expiration_date = timezone.now() + timedelta(days=3)
+        payload = {
+            "user": user.name,
+            "exp": int(expiration_date.timestamp()),
+            "type": "email_confirmation",
+        }
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+        return token
+
+
+class AccountVerificationSerializer(serializers.Serializer):
+    """Account verification serializer."""
+
+    token = serializers.CharField()
+
+    def validate_token(self, data):
+        """Verify token is valid."""
+        try:
+            payload = jwt.decode(
+                data, settings.SECRET_KEY, algorithms=["HS256"]
+            )
+        except jwt.ExpiredSignatureError:
+            raise serializers.ValidationError("Verification link has expired.")
+        except jwt.PyJWTError:
+            raise serializers.ValidationError("Invalid token.")
+        if payload["type"] != "email_confirmation":
+            raise serializers.ValidationError("Invalid token.")
+        self.context["payload"] = payload
+        return data
+
+    def save(self):
+        """Update user's verified status."""
+        payload = self.context["payload"]
+        user = User.objects.get(name=payload["user"])
+        user.is_verified = True
+        user.save()

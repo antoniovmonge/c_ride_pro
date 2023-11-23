@@ -16,4 +16,11 @@ class CircleViewSet(viewsets.ModelViewSet):
 
     queryset = Circle.objects.all()
     serializer_class = CircleModelSerializer
-    permission_classes = [(IsAuthenticated)]
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Restrict list to public-only."""
+        queryset = Circle.objects.all()
+        if self.action == "list":
+            return queryset.filter(is_public=True)
+        return queryset

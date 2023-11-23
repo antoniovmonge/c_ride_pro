@@ -29,4 +29,13 @@ superuser:
 precommit:
 	pre-commit run --all-files
 
+show:
+	docker compose -f local.yml ps
+
+stop django:
+	docker rm -f c_ride_local_django
+
+start django:
+	docker-compose -f local.yml run --rm --service-ports django
+
 .PHONY: run migrate test shell superuser

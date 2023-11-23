@@ -48,6 +48,12 @@ class User(CRideModel, AbstractUser):
         ),
     )
 
+    is_verified = models.BooleanField(
+        "verified",
+        default=False,
+        help_text="Set to true when the user have verified its email address.",
+    )
+
     objects = UserManager()
 
     def get_absolute_url(self) -> str:

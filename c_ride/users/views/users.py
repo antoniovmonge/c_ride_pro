@@ -77,7 +77,7 @@ class UserSignUpAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         """Handle HTTP POST request."""
-        serializer = UserSignUpSerializer(data=request.data)  # <= LOOK HERE
+        serializer = UserSignUpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data

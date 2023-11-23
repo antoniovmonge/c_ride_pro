@@ -26,6 +26,7 @@ class UserAdmin(auth_admin.UserAdmin):
             {
                 "fields": (
                     "name",
+                    "is_verified",
                     "phone_number",
                     "phone_number_verified",
                     "is_client",

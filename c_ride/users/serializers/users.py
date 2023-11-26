@@ -21,9 +21,14 @@ from rest_framework.validators import UniqueValidator
 # Models
 from c_ride.users.models import Profile, User
 
+# Serializers
+from c_ride.users.serializers.profiles import ProfileModelSerializer
+
 
 class UserModelSerializer(serializers.ModelSerializer):
     """User model serializer."""
+
+    profile = ProfileModelSerializer(read_only=True)
 
     class Meta:
         """Meta class."""
@@ -33,6 +38,7 @@ class UserModelSerializer(serializers.ModelSerializer):
             "name",
             "email",
             "phone_number",
+            "profile",
         )
 
 
@@ -99,7 +105,11 @@ class UserSignUpSerializer(serializers.Serializer):
     def create(self, data):
         """Handle user and profile creation."""
         data.pop("password_confirmation")
-        user = User.objects.create_user(**data, is_verified=False)
+        user = User.objects.create_user(
+            **data,
+            is_verified=False,
+            is_client=True,
+        )
         Profile.objects.create(user=user)
         self.send_confirmation_email(user)
         return user

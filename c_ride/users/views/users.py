@@ -6,13 +6,22 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 
 # Django REST Framework
-from rest_framework import status
+from rest_framework import mixins, status, viewsets
+from rest_framework.decorators import action
+
+# Permissions
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
+
+# Models
+from c_ride.circles.models import Circle
+from c_ride.circles.serializers import CircleModelSerializer
+from c_ride.users.permissions import IsAccountOwner
 
 # Serializers
 from c_ride.users.serializers import (
     AccountVerificationSerializer,
+    ProfileModelSerializer,
     UserLoginSerializer,
     UserModelSerializer,
     UserSignUpSerializer,
@@ -58,11 +67,33 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 user_redirect_view = UserRedirectView.as_view()
 
 
-class UserLoginAPIView(APIView):
-    """User login API view."""
+class UserViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    """User view set.
 
-    def post(self, request, *args, **kwargs):
-        """Handle HTTP POST request."""
+    Handle sign up, login and account verification.
+    """
+
+    queryset = User.objects.filter(is_active=True, is_client=True)
+    serializer_class = UserModelSerializer
+    lookup_field = "name"
+
+    def get_permissions(self):
+        """Assign permissions based on action."""
+        if self.action in ["signup", "login", "verify"]:
+            permissions = [AllowAny]
+        elif self.action in ["retrieve", "update", "partial_update"]:
+            permissions = [IsAuthenticated, IsAccountOwner]
+        else:
+            permissions = [IsAuthenticated]
+        return [permission() for permission in permissions]
+
+    @action(detail=False, methods=["post"])
+    def login(self, request):
+        """User sign in."""
         serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
@@ -72,26 +103,47 @@ class UserLoginAPIView(APIView):
         }
         return Response(data, status=status.HTTP_201_CREATED)
 
-
-class UserSignUpAPIView(APIView):
-    """User sign up API view."""
-
-    def post(self, request, *args, **kwargs):
-        """Handle HTTP POST request."""
+    @action(detail=False, methods=["post"])
+    def signup(self, request):
+        """User sign up."""
         serializer = UserSignUpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data
         return Response(data, status=status.HTTP_201_CREATED)
 
-
-class AccountVerificationAPIView(APIView):
-    """Account verification API view."""
-
-    def post(self, request, *args, **kwargs):
-        """Handle HTTP POST request."""
+    @action(detail=False, methods=["post"])
+    def verify(self, request):
+        """Account verification."""
         serializer = AccountVerificationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         data = {"message": _("Congratulation, now go share some rides!")}
         return Response(data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["put", "patch"])
+    def profile(self, request, *args, **kwargs):
+        """Update profile data."""
+        user = self.get_object()
+        profile = user.profile
+        partial = request.method == "PATCH"
+        serializer = ProfileModelSerializer(
+            profile, data=request.data, partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        data = UserModelSerializer(user).data
+        return Response(data)
+
+    def retrieve(self, request, *args, **kwargs):
+        """Add extra data to the response."""
+        response = super().retrieve(request, *args, **kwargs)
+        circles = Circle.objects.filter(
+            members=request.user, membership__is_active=True
+        )
+        data = {
+            "user": response.data,
+            "circles": CircleModelSerializer(circles, many=True).data,
+        }
+        response.data = data
+        return response

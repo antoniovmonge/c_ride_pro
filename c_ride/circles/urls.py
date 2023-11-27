@@ -24,7 +24,9 @@ urlpatterns = [
     path("", include((router.urls, app_name))),
     path(
         "<slug:slug_name>/members/",
-        membership_views.MembershipViewSet.as_view({"get": "list"}),
+        membership_views.MembershipViewSet.as_view(
+            {"get": "list", "post": "create"}
+        ),
         name="members_list",
     ),
     path(

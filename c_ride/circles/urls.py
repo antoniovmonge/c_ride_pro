@@ -27,4 +27,11 @@ urlpatterns = [
         membership_views.MembershipViewSet.as_view({"get": "list"}),
         name="members_list",
     ),
+    path(
+        "<slug:slug_name>/members/<str:name>/",
+        membership_views.MembershipViewSet.as_view(
+            {"get": "retrieve", "delete": "destroy"}
+        ),
+        name="member_detail",
+    ),
 ]

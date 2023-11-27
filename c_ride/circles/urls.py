@@ -34,4 +34,9 @@ urlpatterns = [
         ),
         name="member_detail",
     ),
+    path(
+        "<slug:slug_name>/members/<str:name>/invitations/",
+        membership_views.MembershipViewSet.as_view({"get": "invitations"}),
+        name="invitations",
+    ),
 ]

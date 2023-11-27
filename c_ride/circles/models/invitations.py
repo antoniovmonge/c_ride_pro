@@ -3,6 +3,9 @@
 # Django
 from django.db import models
 
+# Managers
+from c_ride.circles.managers import InvitationManager
+
 # Utilities
 from c_ride.utils.models import CRideModel
 
@@ -46,6 +49,9 @@ class Invitation(CRideModel):
         auto_now_add=True,
         help_text="Date time on which the invitation was created.",
     )
+
+    # Managers
+    objects = InvitationManager()
 
     def __str__(self):
         """Return code and circle."""

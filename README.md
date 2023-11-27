@@ -186,5 +186,5 @@ docker-compose -f local.yml run --rm django python manage.py create_local_user_a
 ### Load Data for Circles
 
 ```bash
-docker-compose run --rm django python manage.py loaddata c_ride/circles/fixtures/circles.json
+docker-compose -f local.yml run --rm django python manage.py loaddata c_ride/circles/fixtures/circles.json
 ```

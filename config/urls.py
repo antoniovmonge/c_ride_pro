@@ -21,6 +21,7 @@ urlpatterns = [
     # User management
     path("users/", include("c_ride.users.urls", namespace="users")),
     path("circles/", include("c_ride.circles.urls", namespace="circles")),
+    path("rides/", include("c_ride.rides.urls", namespace="rides")),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

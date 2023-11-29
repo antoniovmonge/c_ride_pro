@@ -21,8 +21,17 @@ router.register(
 urlpatterns = [
     path("", include((router.urls, app_name))),
     path(
-        "circles/<slug:slug_name>/",
+        "circles/<slug:slug_name>/rides/",
         ride_views.RideViewSet.as_view({"get": "list", "post": "create"}),
         name="ride_list",
+    ),
+    path(
+        "circles/<slug:slug_name>/rides/<pk>/",
+        ride_views.RideViewSet.as_view(
+            {
+                "put": "update",
+                "patch": "partial_update",
+            }
+        ),
     ),
 ]

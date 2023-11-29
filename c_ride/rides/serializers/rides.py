@@ -1,10 +1,11 @@
 """Rides serializers."""
 
-# Django REST Framework
 # Utilities
 from datetime import timedelta
 
 from django.utils import timezone
+
+# Django REST Framework
 from rest_framework import serializers
 
 from c_ride.circles.models import Membership
@@ -12,9 +13,17 @@ from c_ride.circles.models import Membership
 # Models
 from c_ride.rides.models import Ride
 
+# Serializers
+from c_ride.users.serializers import UserModelSerializer
+
 
 class RideModelSerializer(serializers.ModelSerializer):
     """Ride model serializer."""
+
+    offered_by = UserModelSerializer(read_only=True)
+    offered_in = serializers.StringRelatedField()
+
+    passengers = UserModelSerializer(read_only=True, many=True)
 
     class Meta:
         """Meta class."""

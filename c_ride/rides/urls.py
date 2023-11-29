@@ -22,7 +22,7 @@ urlpatterns = [
     path("", include((router.urls, app_name))),
     path(
         "circles/<slug:slug_name>/",
-        ride_views.RideViewSet.as_view({"post": "create"}),
+        ride_views.RideViewSet.as_view({"get": "list", "post": "create"}),
         name="ride_list",
     ),
 ]

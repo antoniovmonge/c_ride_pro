@@ -13,6 +13,30 @@ from c_ride.circles.models import Membership
 from c_ride.rides.models import Ride
 
 
+class RideModelSerializer(serializers.ModelSerializer):
+    """Ride model serializer."""
+
+    class Meta:
+        """Meta class."""
+
+        model = Ride
+        fields = "__all__"
+        read_only_fields = (
+            "offered_by",
+            "offered_in",
+            "rating",
+        )
+
+    def update(self, instance, data):
+        """Allow updates only before departure date."""
+        now = timezone.now()
+        if instance.departure_date <= now:
+            raise serializers.ValidationError(
+                "Ongoing rides cannot be modified."
+            )
+        return super().update(instance, data)
+
+
 class CreateRideSerializer(serializers.ModelSerializer):
     """Create ride serializer."""
 

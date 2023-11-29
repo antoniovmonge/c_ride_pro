@@ -3,9 +3,11 @@
 # Utilities
 from datetime import timedelta
 
-# Django REST Framework
 from django.utils import timezone
-from rest_framework import mixins, viewsets
+
+# Django REST Framework
+from rest_framework import mixins, status, viewsets
+from rest_framework.decorators import action
 
 # Filters
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -13,6 +15,7 @@ from rest_framework.generics import get_object_or_404
 
 # Permissions
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 # Models
 from c_ride.circles.models import Circle
@@ -20,7 +23,11 @@ from c_ride.circles.permissions.memberships import IsActiveCircleMember
 from c_ride.rides.permissions import IsRideOwner
 
 # Serializers
-from c_ride.rides.serializers import CreateRideSerializer, RideModelSerializer
+from c_ride.rides.serializers import (
+    CreateRideSerializer,
+    JoinRideSerializer,
+    RideModelSerializer,
+)
 
 
 class RideViewSet(
@@ -61,6 +68,8 @@ class RideViewSet(
         """Return serializer based on action."""
         if self.action == "create":
             return CreateRideSerializer
+        if self.action == "update":
+            return JoinRideSerializer
         return RideModelSerializer
 
     def get_queryset(self):
@@ -72,3 +81,18 @@ class RideViewSet(
             available_seats__gte=1,
         )
         return queryset
+
+    @action(detail=True, methods=["post"])
+    def join_ride(self, request, *args, **kwargs):
+        """Add requesting user to ride."""
+        ride = self.get_object()
+        serializer = JoinRideSerializer(
+            ride,
+            data={"passenger": request.user},
+            context={"ride": ride, "circle": self.circle},
+            partial=True,
+        )
+        serializer.is_valid(raise_exception=True)
+        ride = serializer.save()
+        data = RideModelSerializer(ride).data
+        return Response(data, status=status.HTTP_200_OK)

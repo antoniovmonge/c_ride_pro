@@ -34,4 +34,9 @@ urlpatterns = [
             }
         ),
     ),
+    path(
+        "circles/<slug:slug_name>/rides/<pk>/join/",
+        ride_views.RideViewSet.as_view({"post": "join_ride"}),
+        name="ride_join",
+    ),
 ]

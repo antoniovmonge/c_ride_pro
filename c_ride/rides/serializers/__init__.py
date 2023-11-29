@@ -1,1 +1,5 @@
-from .rides import CreateRideSerializer, RideModelSerializer  # noqa
+from .rides import (  # noqa
+    CreateRideSerializer,
+    JoinRideSerializer,
+    RideModelSerializer,
+)

@@ -1,17 +1,12 @@
 """Users serializers."""
 
 # Utilities
-from datetime import timedelta
-
 import jwt
 from django.conf import settings
 
 # Django
 from django.contrib.auth import authenticate, password_validation
-from django.core.mail import EmailMultiAlternatives
 from django.core.validators import RegexValidator
-from django.template.loader import render_to_string
-from django.utils import timezone
 
 # Django REST Framework
 from rest_framework import serializers
@@ -23,6 +18,9 @@ from c_ride.users.models import Profile, User
 
 # Serializers
 from c_ride.users.serializers.profiles import ProfileModelSerializer
+
+# Tasks
+from c_ride.users.tasks import send_confirmation_email
 
 
 class UserModelSerializer(serializers.ModelSerializer):
@@ -111,33 +109,8 @@ class UserSignUpSerializer(serializers.Serializer):
             is_client=True,
         )
         Profile.objects.create(user=user)
-        self.send_confirmation_email(user)
+        send_confirmation_email.delay(user_pk=user.pk)
         return user
-
-    def send_confirmation_email(self, user):
-        """Send account verification link to given user."""
-        verification_token = self.gen_verification_token(user)
-        subject = f"Welcome @{user.username}! Verify your account to start using C_Ride"
-        from_email = "C_Ride <noreply@c_ride.com>"
-        to = user.email
-        content = render_to_string(
-            "emails/users/account_verification.html",
-            {"token": verification_token, "user": user},
-        )
-        msg = EmailMultiAlternatives(subject, content, from_email, [to])
-        msg.attach_alternative(content, "text/html")
-        msg.send()
-
-    def gen_verification_token(self, user):
-        """Create JWT token that the user can use to verify its account."""
-        expiration_date = timezone.now() + timedelta(days=3)
-        payload = {
-            "user": user.name,
-            "exp": int(expiration_date.timestamp()),
-            "type": "email_confirmation",
-        }
-        token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-        return token
 
 
 class AccountVerificationSerializer(serializers.Serializer):

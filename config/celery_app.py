@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from celery import Celery
 
@@ -15,3 +16,10 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
+
+app.conf.beat_schedule = {
+    "disable-finished-rides-every-1-minutes": {
+        "task": "disable_finished_rides",
+        "schedule": timedelta(minutes=1),
+    },
+}

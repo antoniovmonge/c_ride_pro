@@ -45,4 +45,9 @@ urlpatterns = [
         ride_views.RideViewSet.as_view({"post": "finish"}),
         name="ride_finish",
     ),
+    path(
+        "circles/<slug:slug_name>/rides/<pk>/ratings/",
+        ride_views.RideViewSet.as_view({"post": "rate"}),
+        name="ride_rate",
+    ),
 ]

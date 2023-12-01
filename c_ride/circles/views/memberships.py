@@ -93,15 +93,11 @@ class MembershipViewSet(
                 ).code
             )
 
-        # used_invitations = invited_members.count() - unused_invitations
         data = {
             "used_invitations": MembershipModelSerializer(
                 invited_members, many=True
             ).data,
             "invitations": invitations,
-            # "unused_invitations": MembershipModelSerializer(
-            #     invited_members[used_invitations:], many=True
-            # ).data,
         }
         return Response(data)
 

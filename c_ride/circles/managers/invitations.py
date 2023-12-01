@@ -16,19 +16,13 @@ class InvitationManager(models.Manager):
 
     CODE_LENGTH = 6
 
-    CODE_CHARS = ascii_uppercase + digits
-
     def create(self, **kwargs):
         """Handle code creation."""
-        pool = kwargs.get("pool")
-        if not pool:
-            pool = self.CODE_CHARS
-        code = self.create_code()
+        pool = ascii_uppercase + digits + ".-"
+        code = kwargs.get(
+            "code", "".join(random.choices(pool, k=self.CODE_LENGTH))
+        )
         while self.filter(code=code).exists():
-            code = self.create_code()
+            code = "".join(random.choices(pool, k=self.CODE_LENGTH))
         kwargs["code"] = code
         return super().create(**kwargs)
-
-    def create_code(self):
-        """Create a random code."""
-        return "".join(random.choices(self.CODE_CHARS, k=self.CODE_LENGTH))

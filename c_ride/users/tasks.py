@@ -1,6 +1,3 @@
-# Django
-import time
-
 # Utilities
 from datetime import timedelta
 
@@ -38,9 +35,11 @@ def gen_verification_token(user):
 @celery_app.task(name="send_confirmation_email", max_retries=3)
 def send_confirmation_email(user_pk):
     """Send account verification link to given user."""
-    for i in range(30):
-        time.sleep(1)
-        print("Sleeping", str(i + 1))
+    # Uncomment following lines to test Celery
+    # import time
+    # for i in range(30):
+    #     time.sleep(1)
+    #     print("Sleeping", str(i + 1))
     user = User.objects.get(pk=user_pk)
     verification_token = gen_verification_token(user)
     subject = (

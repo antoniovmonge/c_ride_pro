@@ -31,6 +31,7 @@ urlpatterns = [
             {
                 "put": "update",
                 "patch": "partial_update",
+                "get": "retrieve",
             }
         ),
     ),
@@ -38,5 +39,10 @@ urlpatterns = [
         "circles/<slug:slug_name>/rides/<pk>/join/",
         ride_views.RideViewSet.as_view({"post": "join_ride"}),
         name="ride_join",
+    ),
+    path(
+        "circles/<slug:slug_name>/rides/<pk>/finish/",
+        ride_views.RideViewSet.as_view({"post": "finish"}),
+        name="ride_finish",
     ),
 ]

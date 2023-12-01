@@ -154,19 +154,6 @@ class JoinRideSerializer(serializers.ModelSerializer):
         self.context["member"] = membership
         return data
 
-    # def validate(self, data):
-    #     """Verify rides allow new passengers."""
-    #     offset = timezone.now() + timedelta(minutes=10)
-    #     ride = self.context["ride"]
-    #     if ride.departure_date <= offset:
-    #         raise serializers.ValidationError("You can't join this ride now.")
-    #     if ride.available_seats < 1:
-    #         raise serializers.ValidationError("Ride is already full!")
-    #     if Ride.objects.filter(passengers__pk=data["passenger"]):
-    #         raise serializers.ValidationError(
-    #             "Passenger is already in this trip."
-    #         )
-    #     return data
     def validate(self, data):
         """Verify rides allow new passengers."""
         ride = self.context["ride"]
@@ -210,3 +197,22 @@ class JoinRideSerializer(serializers.ModelSerializer):
         ride.save()
 
         return ride
+
+
+class EndRideSerializer(serializers.ModelSerializer):
+    """End ride serializer."""
+
+    current_time = serializers.DateTimeField()
+
+    class Meta:
+        """Meta class."""
+
+        model = Ride
+        fields = ("is_active", "current_time")
+
+    def validate_current_time(self, data):
+        """Verify ride have indeed started."""
+        ride = self.context["view"].get_object()
+        if data <= ride.departure_date:
+            raise serializers.ValidationError("Ride has not started yet")
+        return data

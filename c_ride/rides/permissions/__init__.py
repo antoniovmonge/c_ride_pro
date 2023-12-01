@@ -1,1 +1,1 @@
-from .rides import IsRideOwner  # noqa
+from .rides import IsNotRideOwner, IsRideOwner  # noqa

@@ -88,7 +88,7 @@ class Profile(CRideModel):
         blank=True,
         null=True,
     )
-    biography = models.CharField(max_length=500, blank=True)
+    biography = models.TextField(max_length=500, blank=True)
 
     # Stats
     rides_taken = models.PositiveIntegerField(default=0)

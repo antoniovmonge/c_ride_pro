@@ -29,10 +29,10 @@ class Ride(CRideModel):
     passengers = models.ManyToManyField(
         "users.User",
         help_text="Passengers that have joined the ride",
-        related_name="passenger_rides",
+        related_name="passengers",
     )
 
-    available_seats = models.PositiveIntegerField(
+    available_seats = models.PositiveSmallIntegerField(
         default=1, help_text="Number of available seats on the ride"
     )
 
@@ -43,7 +43,7 @@ class Ride(CRideModel):
     arrival_location = models.CharField(max_length=255)
     arrival_date = models.DateTimeField()
 
-    rating = models.FloatField(null=True, help_text="Ride rating", default=0.0)
+    rating = models.FloatField(null=True, help_text="Ride rating")
 
     is_active = models.BooleanField(
         "active status",

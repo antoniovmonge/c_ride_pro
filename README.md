@@ -183,6 +183,12 @@ pre-commit run --all-files
 docker-compose -f local.yml run --rm django python manage.py create_local_user_and_admin
 ```
 
+### Populate DB with dummy data
+
+```bash
+docker-compose -f local.yml run --rm django python manage.py populate_db
+```
+
 ### Load Data for Circles
 
 ```bash

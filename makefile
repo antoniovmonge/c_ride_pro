@@ -41,4 +41,7 @@ stop-django:
 start-django:
 	docker-compose -f local.yml run --rm --service-ports django
 
+flush:
+	$(MANAGE) flush
+
 .PHONY: run migrate test shell superuser
